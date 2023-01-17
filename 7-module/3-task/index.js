@@ -3,7 +3,7 @@ export default class StepSlider {
     this.steps = steps;
     this.value = value;
     this.elem = this.render();
-    this.sliderChangeEvStart();
+    // this.sliderChangeEvStart();
   }
 
   render() {
@@ -28,7 +28,12 @@ export default class StepSlider {
     //Шаги слайдера
     const sliderStepsDiv = document.createElement('div');
     sliderStepsDiv.classList.add('slider__steps');
-    for (let i = 0; i < this.steps; i++) {sliderStepsDiv.append(document.createElement('span'))};
+    for (let i = 0; i < this.steps; i++) {
+      let step = document.createElement('span');
+      if (i === 0) {
+        step.classList.add('slider__step-active');
+      }
+      sliderStepsDiv.append(step)};
 
     //Сборка верстки
     sliderDiv.append(sliderThumbDiv);
@@ -68,15 +73,15 @@ export default class StepSlider {
 
   }
 
-  sliderChangeEvStart() {
-    const sliderChangeEv = new CustomEvent('slider-change', {
-      detail: this.value,
-      bubbles: true
-    });
+  // sliderChangeEvStart() {
+  //   const sliderChangeEv = new CustomEvent('slider-change', {
+  //     detail: this.value,
+  //     bubbles: true
+  //   });
 
-    // console.log(sliderChangeEv);
+  //   // console.log(sliderChangeEv);
 
-    this.elem.dispatchEvent(sliderChangeEv);
-  }
+  //   this.elem.dispatchEvent(sliderChangeEv);
+  // }
   
 }

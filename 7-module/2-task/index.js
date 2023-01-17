@@ -2,19 +2,24 @@ import createElement from '../../assets/lib/create-element.js';
 
 export default class Modal {
   constructor() {
+    this.render();
   }
 
   setTitle(title) {
-    return (this.modalTitle = title);
+    const modalTitleEl = this.elem.querySelector('.modal__title');
+    modalTitleEl.innerHTML = '';
+    modalTitleEl.textContent = title;
   }
 
   setBody(body) {
-    return (this.modalBody = body);
+    const modalBodyEl = this.elem.querySelector('.modal__body');
+    modalBodyEl.innerHTML = '';
+    modalBodyEl.append(body);
   }
 
   render() {
 
-    const modalDiv = createElement(`
+    this.elem = createElement(`
       <div class="modal">
       <!--Прозрачная подложка перекрывающая интерфейс-->
       <div class="modal__overlay"></div>
@@ -26,38 +31,32 @@ export default class Modal {
             <img src="/assets/images/icons/cross-icon.svg" alt="close-icon" />
           </button>
 
-          <h3 class="modal__title">
-            ${this.modalTitle}
-          </h3>
+          <h3 class="modal__title"></h3>
         </div>
 
-        <div class="modal__body">
-          ${this.modalBody.innerHTML}
-        </div>
+        <div class="modal__body"></div>
       </div>
     `)
-
-    return modalDiv;
   }
 
-  open() {
+  open = () => {
     let body = document.querySelector('body');
-    body.append(this.render());
+    body.append(this.elem);
     body.classList.add('is-modal-open');
 
     this.closeMethod()
   }
 
-  closeMethod() {
+  closeMethod = () => {
 
-    function closeFn() {
+    const closeFn = () => {
       let body = document.querySelector('body');
-      let modal = document.querySelector('.modal');
+      let modal = this.elem;
       modal.remove();
       body.classList.remove('is-modal-open');
     };
 
-    function closeEsc(ev) {
+    const closeEsc = (ev) => {
       if (ev.code === 'Escape') {
         closeFn();
         document.removeEventListener('keydown', closeEsc);
@@ -72,7 +71,7 @@ export default class Modal {
       document.removeEventListener('keydown', closeEsc);    
     });
 
-    this.close = function () {
+    this.close = () => {
       closeFn();
       document.removeEventListener('keydown', closeEsc);
     }
